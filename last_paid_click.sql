@@ -9,9 +9,6 @@ with tab as (
         amount,
         closing_reason,
         status_id,
-        case
-            when created_at < visit_date then 'invalid' else lead_id
-        end as lead_id,
         ROW_NUMBER()
             over (partition by sessions.visitor_id order by visit_date desc)
         as rn
