@@ -18,7 +18,7 @@ with tab as (
     from sessions
     left join leads
         on sessions.visitor_id = leads.visitor_id
-    where medium in ('cpc', 'cpm', 'cpa', 'youtube', 'cpp', 'tg', 'social')
+    where medium  <> 'organic'
 )
 
 select
