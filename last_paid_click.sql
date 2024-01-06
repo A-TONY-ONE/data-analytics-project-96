@@ -18,6 +18,7 @@ with tab as (
     from sessions
     left join leads
         on sessions.visitor_id = leads.visitor_id
+        and visit_date <= created_at
     where medium  <> 'organic'
 )
 
@@ -27,15 +28,12 @@ select
     tab.source as utm_source,
     tab.medium as utm_medium,
     tab.campaign as utm_campaign,
-    case
-        when tab.created_at < tab.visit_date then 'invalid' else lead_id
-    end as lead_id,
     tab.created_at,
     tab.amount,
     tab.closing_reason,
     tab.status_id
 from tab
-where (tab.lead_id != 'invalid' or tab.lead_id is null) and tab.rn = 1
+where tab.rn = 1
 order by
     tab.amount desc nulls last,
     tab.visit_date asc,
