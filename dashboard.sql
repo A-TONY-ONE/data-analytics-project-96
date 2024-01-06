@@ -7,20 +7,18 @@ with tab as (
         campaign,
         created_at,
         closing_reason,
+        lead_id,
         status_id,
         coalesce(amount, 0) as amount,
-        case
-            when created_at < visit_date then 'delete' else lead_id
-        end as lead_id,
         row_number()
             over (partition by sessions.visitor_id order by visit_date desc)
         as rn
     from sessions
     left join leads
         on sessions.visitor_id = leads.visitor_id
-    where medium in ('cpc', 'cpm', 'cpa', 'youtube', 'cpp', 'tg', 'social')
+        and visit_date <= created_at
+    where medium  <> 'organic'
 ),
-
 tab2 as (
     select
         tab.visitor_id,
@@ -31,12 +29,10 @@ tab2 as (
         tab.amount,
         tab.closing_reason,
         tab.status_id,
-        date_trunc('day', tab.visit_date) as visit_date,
-        case
-            when tab.created_at < tab.visit_date then 'delete' else lead_id
-        end as lead_id
+        tab.lead_id,
+        date_trunc('day', tab.visit_date) as visit_date
     from tab
-    where (tab.lead_id != 'delete' or tab.lead_id is null) and tab.rn = 1
+    where tab.rn = 1
 ),
 
 amount as (
