@@ -18,7 +18,7 @@ with sessions_leads as (
         on
             sessions.visitor_id = leads.visitor_id
             and visit_date <= created_at
-    where medium in ('cpc', 'cpm', 'cpa', 'youtube', 'cpp', 'tg', 'social')
+    where medium  <> 'organic'
 ),
 
 revenue_vk_ads_ya_ads as (
