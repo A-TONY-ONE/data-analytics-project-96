@@ -1,3 +1,4 @@
+--- PIVOT TABLE
 with tab as (
     select
         sessions.visitor_id,
@@ -142,3 +143,18 @@ select *,
     CASE WHEN total_cost = 0 THEN NULL ELSE ((revenue - total_cost) / total_cost) * 100 END AS roi
 FROM tab6
 order by roi
+--КОНВЕРСИЯ---
+ with tab as (
+    SELECT
+        count(DISTINCT visitor_id) AS cdv
+		FROM sessions
+        ),
+tab2 as (SELECT *,
+        CASE
+            WHEN amount > 0 THEN 1
+            ELSE 0
+        END AS sl
+    FROM leads
+    )
+    SELECT round(((SELECT SUM (sl) FROM tab2)/(cdv/100)),5) AS "LEADS WITH AMOUNT /  DISTINCT VISITS"
+	FROM tab
