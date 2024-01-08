@@ -77,10 +77,10 @@ select
     utm_source,
     utm_medium,
     utm_campaign,
+    SUM(leads_count) as leads_count,
     TO_CHAR(visit_date, 'YYYY-MM-DD') as visit_date,
     SUM(visitors_count) as visitors_count,
     SUM(total_cost) as total_cost,
-    SUM(leads_count) as leads_count,
     SUM(purchases_count) as purchases_count,
     SUM(revenue) as revenue
 from revenue_vk_ads_ya_ads
@@ -95,4 +95,5 @@ order by
     visitors_count desc,
     utm_source asc,
     utm_medium asc,
-    utm_campaign asc;
+    utm_campaign asc
+limit 10;
