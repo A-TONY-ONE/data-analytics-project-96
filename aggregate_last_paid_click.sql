@@ -12,13 +12,13 @@ with sessions_leads as (
         lead_id,
         ROW_NUMBER()
             over (partition by sessions.visitor_id order by visit_date desc)
-        as rn
+            as rn
     from sessions
     left join leads
         on
             sessions.visitor_id = leads.visitor_id
             and visit_date <= created_at
-    where medium  <> 'organic'
+    where medium != 'organic'
 ),
 
 revenue_vk_ads_ya_ads as (
@@ -74,10 +74,10 @@ revenue_vk_ads_ya_ads as (
 )
 
 select
-	TO_CHAR(visit_date, 'YYYY-MM-DD') as visit_date,
     utm_source,
     utm_medium,
     utm_campaign,
+    TO_CHAR(visit_date, 'YYYY-MM-DD') as visit_date,
     SUM(visitors_count) as visitors_count,
     SUM(total_cost) as total_cost,
     SUM(leads_count) as leads_count,
