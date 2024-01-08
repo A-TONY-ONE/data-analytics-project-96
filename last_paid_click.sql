@@ -11,12 +11,13 @@ with tab as (
         status_id,
         ROW_NUMBER()
             over (partition by sessions.visitor_id order by visit_date desc)
-        as rn
+            as rn
     from sessions
     left join leads
-        on sessions.visitor_id = leads.visitor_id
-        and visit_date <= created_at
-    where medium  <> 'organic'
+        on
+            sessions.visitor_id = leads.visitor_id
+            and visit_date <= created_at
+    where medium != 'organic'
 )
 
 select
