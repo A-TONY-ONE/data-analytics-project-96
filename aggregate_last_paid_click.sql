@@ -75,11 +75,11 @@ revenue_vk_ads_ya_ads as (
 
 select
     utm_source,
+    SUM(visitors_count) as visitors_count,
     utm_medium,
     utm_campaign,
     SUM(leads_count) as leads_count,
     TO_CHAR(visit_date, 'YYYY-MM-DD') as visit_date,
-    SUM(visitors_count) as visitors_count,
     SUM(total_cost) as total_cost,
     SUM(purchases_count) as purchases_count,
     SUM(revenue) as revenue
